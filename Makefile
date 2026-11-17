@@ -30,6 +30,7 @@ browse:
 	python3 apps/zetobrowse.py $(URL)
 
 zeto-check:
+	@mkdir -p $(BUILD)
 	python3 language/zeto.py games/murino/game.zeto --emit-python > $(BUILD)/murino.bootstrap.py
 	python3 -m py_compile $(BUILD)/murino.bootstrap.py
 

@@ -1,15 +1,87 @@
-# План разработки Zetomir OS
+# Дорожная карта ZETOMIR OS 1.0
 
-- [x] Этап 1: x86_64 ELF kernel, Limine BIOS entry, framebuffer, serial log, memory-map readout.
-- [x] Этап 2a: ZETOMIR 0.1 host bootstrap, `.zeto` game script, automated syntax tests.
-- [ ] Этап 2b: GDT/TSS, IDT, CPU exceptions, PIC/IRQ, PIT.
-- [ ] Этап 3: PS/2 keyboard, input queue, interactive kernel terminal.
-- [ ] Этап 4: physical/virtual memory allocators and kernel heap.
-- [ ] Этап 5: block device driver and ZetoFS.
-- [ ] Этап 6: VFS, process model, scheduler, ring 3, syscalls.
-- [ ] Этап 7: native ZVM bytecode runtime + compiler in C.
-- [ ] Этап 8: ZetoShell and app launcher; Murino runs as a ZETOMIR application.
-- [ ] Этап 9: graphical desktop, window manager, input stack, audio.
-- [ ] Этап 10: package manager, installer, reproducible distribution ISO.
+Галочка ставится только после реализации и проверки. Наличие каталога, заглушки или записи в Makefile не считается готовой функцией.
 
-A checked item means source exists and its stated tests pass; it does not imply the whole OS is feature-complete.
+## Текущая база
+- [x] Freestanding x86_64 ELF kernel и `_start`.
+- [x] BIOS-конфигурация Limine.
+- [x] Базовый framebuffer и статическая отрисовка.
+- [x] COM1 serial diagnostics.
+- [x] Чтение карты памяти Limine.
+- [x] Python host-bootstrap языка ZETOMIR.
+- [x] Host-прототипы ZetoBrowse и ZetoFetch.
+- [x] Игра Murino и базовые host tests.
+
+## 0.2 — CPU и прерывания
+- [ ] GDT и TSS.
+- [ ] IDT и обработчики CPU exceptions.
+- [ ] PIC/APIC и IRQ dispatcher.
+- [ ] PIT/system timer.
+- [ ] Panic diagnostics с причиной и регистрами.
+
+## 0.3 — клавиатура, мышь и терминал
+- [ ] PS/2 keyboard controller и scancode parser.
+- [ ] Раскладка, Shift/Ctrl/Alt/Caps Lock.
+- [ ] Очередь событий ввода.
+- [ ] Интерактивная консоль с редактированием строки.
+- [ ] PS/2 mouse: движение, кнопки, колесо.
+- [ ] Единый input API.
+- [ ] Позже USB HID keyboard/mouse.
+
+## 0.4 — память
+- [ ] PMM.
+- [ ] VMM и управление address spaces.
+- [ ] Kernel heap.
+- [ ] Тесты выделения, освобождения и выравнивания.
+
+## 0.5 — накопители и файлы
+- [ ] Блочные устройства.
+- [ ] GPT/MBR parser.
+- [ ] VFS.
+- [ ] ZetoFS: создание, чтение, запись, каталоги.
+- [ ] Initrd.
+
+## 0.6 — приложения и многозадачность
+- [ ] ELF loader.
+- [ ] Scheduler.
+- [ ] Processes and threads.
+- [ ] Ring 3 и системные вызовы.
+- [ ] ZetoShell.
+- [ ] Защита адресных пространств.
+
+## 0.7 — ZETOMIR runtime
+- [ ] Lexer/parser и спецификация языка.
+- [ ] Bytecode format.
+- [ ] ZVM.
+- [ ] Standard library.
+- [ ] Нативный запуск `.zeto` без Python.
+
+## 0.8 — графическая среда
+- [ ] Графический backend и курсор.
+- [ ] Оконный менеджер.
+- [ ] Рабочий стол, панель задач, launcher.
+- [ ] Файловый менеджер и настройки.
+- [ ] Мышь и клавиатурная навигация во всех приложениях.
+
+## 0.9 — устройства и системные службы
+- [ ] USB xHCI/HID.
+- [ ] Ethernet и сетевой драйвер.
+- [ ] TCP/IP, DNS, DHCP.
+- [ ] TLS/HTTPS.
+- [ ] Базовый звук.
+- [ ] ZetoPackage.
+- [ ] Live ISO и установщик.
+- [ ] Обновление и восстановление.
+
+## 1.0 — стабильный релиз
+- [ ] BIOS boot проверен.
+- [ ] UEFI boot реализован и проверен.
+- [ ] QEMU и VirtualBox test matrix.
+- [ ] Список проверенного реального оборудования.
+- [ ] Рабочие клавиатура и мышь.
+- [ ] Интерактивный терминал и GUI.
+- [ ] Файлы и нативные приложения.
+- [ ] ZVM и системные приложения.
+- [ ] Базовая сеть.
+- [ ] Установщик, Live-режим и руководство.
+- [ ] Автоматические тесты и воспроизводимая сборка.
