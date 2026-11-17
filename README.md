@@ -1,4 +1,4 @@
-# Zetomir OS 0.1 — Stage 1
+# Zetomir OS 0.1
 
 Первый загрузочный фундамент Zetomir: 64-битное freestanding-ядро,
 BIOS-загрузка через Limine, framebuffer UI и serial-консоль.
@@ -102,8 +102,3 @@ grub-file --is-x86-multiboot2 build/kernel.elf
 6. ELF loader, libc и ZetoShell.
 7. Графическая подсистема, ввод мыши и оконный менеджер.
 8. Установщик, менеджер пакетов и дистрибутив Zetomir.
-
-## Лицензии
-
-Код этого учебного этапа — MIT. Limine распространяется отдельно
-на условиях собственной лицензии; см. LICENSE в репозитории Limine.
