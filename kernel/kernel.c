@@ -1,9 +1,17 @@
 #include "types.h"
 #include "arch/x86_64/cpu.h"
+#include "arch/x86_64/gdt.h"
+#include "arch/x86_64/idt.h"
 #include "drivers/serial.h"
 #include "drivers/framebuffer.h"
+#include "drivers/keyboard.h"
+#include "drivers/timer.h"
 #include "console/console.h"
 #include "mm/memory.h"
+#include "mm/pmm.h"
+#include "fs/vfs.h"
+#include "process/sched.h"
+#include "loader/elf.h"
 
 #define LIMINE_BASE_REVISION(N) { 0xf9562b2d5c95a6c8, 0x6a7b384944536bdc, (N) }
 #define LIMINE_FRAMEBUFFER_REQUEST_ID { 0x9d5827dcd881dd75, 0xa3148604f6fab11b }
@@ -57,6 +65,10 @@ static void print_memory(void) {
     while(n) console_putc(buf[--n]);
     console_write(" MB\n");
 }
+static int streq(const char *a, const char *b) {
+    while (*a && *b && *a == *b) { a++; b++; }
+    return *a == *b;
+}
 void _start(void) {
     serial_init();
     serial_write("\r\nZetomir OS booting...\r\n");
@@ -67,8 +79,15 @@ void _start(void) {
     }
     if (fb_ready()) gui_draw();
     console_init();
+    gdt_init();
+    idt_init();
     cpu_init();
     memory_init();
+    pmm_init(memory_total_bytes());
+    keyboard_init();
+    timer_init(100);
+    vfs_init();
+    sched_init();
     console_write("Zetomir OS kernel 0.1\n");
     console_write("64-bit x86_64 BIOS boot\n");
     console_write("Framebuffer: ");
@@ -78,5 +97,25 @@ void _start(void) {
     console_write("This is the first bootable development milestone.\n");
     console_write("Keyboard input and storage drivers are scheduled next.\n");
     console_write("\nroot@zetomir:/$ ");
-    for (;;) cpu_halt();
+    char buf[128]; int bi = 0;
+    for (;;) {
+        char c = keyboard_read();
+        if (c) {
+            if (c == '\\n') {
+                buf[bi] = 0;
+                if (!streq(buf, "help")) console_write("Commands: help ls mem clear\n");
+                else if (!streq(buf, "ls")) { char out[256]; vfs_ls(out, 256); console_write(out); }
+                else if (!streq(buf, "mem")) print_memory();
+                else if (!streq(buf, "clear")) gui_draw();
+                else if (bi) console_write("unknown command\n");
+                bi = 0;
+                console_write("root@zetomir:/$ ");
+            } else if (c == 8 && bi > 0) {
+                bi--; console_write("\\b \\b");
+            } else if (bi < 127 && c >= 32) {
+                buf[bi++] = c; console_putc(c);
+            }
+        }
+        cpu_halt();
+    }
 }
