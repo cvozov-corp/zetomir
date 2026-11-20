@@ -1,9 +1,13 @@
 #include "types.h"
 #include "arch/x86_64/cpu.h"
+#include "arch/x86_64/gdt.h"
+#include "arch/x86_64/idt.h"
 #include "drivers/serial.h"
 #include "drivers/framebuffer.h"
+#include "drivers/keyboard.h"
 #include "console/console.h"
 #include "mm/memory.h"
+#include "mm/pmm.h"
 
 #define LIMINE_BASE_REVISION(N) { 0xf9562b2d5c95a6c8, 0x6a7b384944536bdc, (N) }
 #define LIMINE_FRAMEBUFFER_REQUEST_ID { 0x9d5827dcd881dd75, 0xa3148604f6fab11b }
@@ -67,8 +71,12 @@ void _start(void) {
     }
     if (fb_ready()) gui_draw();
     console_init();
+    gdt_init();
+    idt_init();
     cpu_init();
     memory_init();
+    pmm_init(memory_total_bytes());
+    keyboard_init();
     console_write("Zetomir OS kernel 0.1\n");
     console_write("64-bit x86_64 BIOS boot\n");
     console_write("Framebuffer: ");
