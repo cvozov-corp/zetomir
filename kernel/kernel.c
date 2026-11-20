@@ -9,6 +9,7 @@
 #include "drivers/mouse.h"
 #include "desktop/wm.h"
 #include "desktop/desktop.h"
+#include "desktop/compositor.h"
 #include "runtime/zvm.h"
 #include "games/murino.h"
 #include "console/console.h"
@@ -120,6 +121,7 @@ void _start(void) {
     sched_init();
     wm_init();
     desktop_init();
+    compositor_init();
     zvm_init();
     murino_init();
     console_write("Zetomir OS kernel 0.1\n");
