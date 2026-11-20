@@ -18,6 +18,7 @@
 #include "syscalls/syscalls.h"
 #include "fs/vfs.h"
 #include "fs/zetofs/zetofs.h"
+#include "net/net.h"
 #include "process/sched.h"
 #include "loader/elf.h"
 
@@ -103,6 +104,7 @@ void _start(void) {
     mouse_init();
     vfs_init();
     zetofs_init();
+    net_init();
     sched_init();
     wm_init();
     desktop_init();
