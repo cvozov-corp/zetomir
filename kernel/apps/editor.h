@@ -6,4 +6,3 @@ void editor_open(const char *name);
 void editor_insert(char c);
 void editor_save(const char *name);
 #endif
-EOF
