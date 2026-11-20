@@ -10,6 +10,8 @@
 #include "mm/memory.h"
 #include "mm/pmm.h"
 #include "fs/vfs.h"
+#include "process/sched.h"
+#include "loader/elf.h"
 
 #define LIMINE_BASE_REVISION(N) { 0xf9562b2d5c95a6c8, 0x6a7b384944536bdc, (N) }
 #define LIMINE_FRAMEBUFFER_REQUEST_ID { 0x9d5827dcd881dd75, 0xa3148604f6fab11b }
@@ -85,6 +87,7 @@ void _start(void) {
     keyboard_init();
     timer_init(100);
     vfs_init();
+    sched_init();
     console_write("Zetomir OS kernel 0.1\n");
     console_write("64-bit x86_64 BIOS boot\n");
     console_write("Framebuffer: ");
