@@ -15,6 +15,7 @@
 #include "mm/memory.h"
 #include "mm/pmm.h"
 #include "mm/vmm/vmm.h"
+#include "syscalls/syscalls.h"
 #include "fs/vfs.h"
 #include "process/sched.h"
 #include "loader/elf.h"
@@ -95,6 +96,7 @@ void _start(void) {
     memory_init();
     pmm_init(memory_total_bytes());
     vmm_init();
+    syscalls_init();
     keyboard_init();
     timer_init(100);
     mouse_init();
