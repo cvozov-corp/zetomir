@@ -17,6 +17,7 @@
 #include "mm/vmm/vmm.h"
 #include "syscalls/syscalls.h"
 #include "fs/vfs.h"
+#include "fs/zetofs/zetofs.h"
 #include "process/sched.h"
 #include "loader/elf.h"
 
@@ -101,6 +102,7 @@ void _start(void) {
     timer_init(100);
     mouse_init();
     vfs_init();
+    zetofs_init();
     sched_init();
     wm_init();
     desktop_init();
