@@ -8,6 +8,7 @@
 #include "drivers/timer.h"
 #include "drivers/mouse.h"
 #include "desktop/wm.h"
+#include "desktop/desktop.h"
 #include "console/console.h"
 #include "mm/memory.h"
 #include "mm/pmm.h"
@@ -92,6 +93,7 @@ void _start(void) {
     vfs_init();
     sched_init();
     wm_init();
+    desktop_init();
     console_write("Zetomir OS kernel 0.1\n");
     console_write("64-bit x86_64 BIOS boot\n");
     console_write("Framebuffer: ");
@@ -111,7 +113,7 @@ void _start(void) {
                 if (!streq(buf, "help")) console_write("Commands: help ls mem clear\n");
                 else if (!streq(buf, "ls")) { char out[256]; vfs_ls(out, 256); console_write(out); }
                 else if (!streq(buf, "mem")) print_memory();
-                else if (!streq(buf, "clear")) gui_draw();
+                else if (!streq(buf, "clear")) { gui_draw(); desktop_paint(); }
                 else if (bi) console_write("unknown command\n");
                 bi = 0;
                 console_write("root@zetomir:/$ ");
