@@ -6,6 +6,8 @@
 #include "drivers/framebuffer.h"
 #include "drivers/keyboard.h"
 #include "drivers/timer.h"
+#include "drivers/mouse.h"
+#include "desktop/wm.h"
 #include "console/console.h"
 #include "mm/memory.h"
 #include "mm/pmm.h"
@@ -86,8 +88,10 @@ void _start(void) {
     pmm_init(memory_total_bytes());
     keyboard_init();
     timer_init(100);
+    mouse_init();
     vfs_init();
     sched_init();
+    wm_init();
     console_write("Zetomir OS kernel 0.1\n");
     console_write("64-bit x86_64 BIOS boot\n");
     console_write("Framebuffer: ");
@@ -98,6 +102,7 @@ void _start(void) {
     console_write("Keyboard input and storage drivers are scheduled next.\n");
     console_write("\nroot@zetomir:/$ ");
     char buf[128]; int bi = 0;
+    static int cx = 640, cy = 360;
     for (;;) {
         char c = keyboard_read();
         if (c) {
@@ -116,6 +121,9 @@ void _start(void) {
                 buf[bi++] = c; console_putc(c);
             }
         }
+        int dx,dy,btn;
+        if (mouse_read(&dx,&dy,&btn)) { cx += dx; cy -= dy; wm_move_cursor(cx,cy); }
+        wm_paint();
         cpu_halt();
     }
 }
