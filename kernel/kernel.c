@@ -9,6 +9,8 @@
 #include "drivers/mouse.h"
 #include "desktop/wm.h"
 #include "desktop/desktop.h"
+#include "runtime/zvm.h"
+#include "games/murino.h"
 #include "console/console.h"
 #include "mm/memory.h"
 #include "mm/pmm.h"
@@ -94,6 +96,8 @@ void _start(void) {
     sched_init();
     wm_init();
     desktop_init();
+    zvm_init();
+    murino_init();
     console_write("Zetomir OS kernel 0.1\n");
     console_write("64-bit x86_64 BIOS boot\n");
     console_write("Framebuffer: ");
