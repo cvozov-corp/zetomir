@@ -19,6 +19,7 @@
 #include "fs/vfs.h"
 #include "fs/zetofs/zetofs.h"
 #include "net/net.h"
+#include "audio/audio.h"
 #include "process/sched.h"
 #include "loader/elf.h"
 
@@ -105,6 +106,7 @@ void _start(void) {
     vfs_init();
     zetofs_init();
     net_init();
+    audio_init();
     sched_init();
     wm_init();
     desktop_init();
