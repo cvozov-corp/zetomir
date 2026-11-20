@@ -5,6 +5,7 @@
 #include "drivers/serial.h"
 #include "drivers/framebuffer.h"
 #include "drivers/keyboard.h"
+#include "drivers/timer.h"
 #include "console/console.h"
 #include "mm/memory.h"
 #include "mm/pmm.h"
@@ -77,6 +78,7 @@ void _start(void) {
     memory_init();
     pmm_init(memory_total_bytes());
     keyboard_init();
+    timer_init(100);
     console_write("Zetomir OS kernel 0.1\n");
     console_write("64-bit x86_64 BIOS boot\n");
     console_write("Framebuffer: ");
@@ -86,5 +88,12 @@ void _start(void) {
     console_write("This is the first bootable development milestone.\n");
     console_write("Keyboard input and storage drivers are scheduled next.\n");
     console_write("\nroot@zetomir:/$ ");
-    for (;;) cpu_halt();
+    for (;;) {
+        char c = keyboard_read();
+        if (c) {
+            if (c == '\\n') console_write("\nroot@zetomir:/$ ");
+            else console_putc(c);
+        }
+        cpu_halt();
+    }
 }
