@@ -22,6 +22,7 @@
 #include "audio/audio.h"
 #include "drivers/block/block.h"
 #include "smp/smp.h"
+#include "drivers/usb/usb.h"
 #include "pkg/pkg.h"
 #include "installer/install.h"
 #include "process/sched.h"
@@ -113,6 +114,7 @@ void _start(void) {
     audio_init();
     block_init();
     smp_init();
+    usb_init();
     pkg_init();
     install_init();
     sched_init();
