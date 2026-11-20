@@ -20,3 +20,20 @@ int vfs_ls(char *out, int max) {
     out[pos] = 0;
     return pos;
 }
+
+int vfs_read(const char *name, char *out, int max) {
+    for (int i = 0; i < nfiles; i++) {
+        /* compare name */
+        int eq = 1; int k=0;
+        while (name[k] || files[i].name[k]) { if (name[k]!=files[i].name[k]) { eq=0; break; } k++; }
+        if (eq) {
+            const char *d = files[i].data;
+            int p = 0;
+            while (*d && p < max-1) out[p++] = *d++;
+            out[p]=0;
+            return p;
+        }
+    }
+    out[0]=0;
+    return 0;
+}

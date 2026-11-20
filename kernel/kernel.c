@@ -70,6 +70,10 @@ static void print_memory(void) {
     while(n) console_putc(buf[--n]);
     console_write(" MB\n");
 }
+static int starts_with(const char *a, const char *b) {
+    while (*b) { if (*a++ != *b++) return 0; }
+    return 1;
+}
 static int streq(const char *a, const char *b) {
     while (*a && *b && *a == *b) { a++; b++; }
     return *a == *b;
@@ -118,6 +122,7 @@ void _start(void) {
                 else if (!streq(buf, "ls")) { char out[256]; vfs_ls(out, 256); console_write(out); }
                 else if (!streq(buf, "mem")) print_memory();
                 else if (!streq(buf, "clear")) { gui_draw(); desktop_paint(); }
+                else if (starts_with(buf, "cat ")) { char out[256]; vfs_read(buf+4, out, 256); console_write(out); }
                 else if (bi) console_write("unknown command\n");
                 bi = 0;
                 console_write("root@zetomir:/$ ");
