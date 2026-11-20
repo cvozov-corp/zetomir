@@ -123,6 +123,12 @@ void _start(void) {
                 else if (!streq(buf, "mem")) print_memory();
                 else if (!streq(buf, "clear")) { gui_draw(); desktop_paint(); }
                 else if (starts_with(buf, "cat ")) { char out[256]; vfs_read(buf+4, out, 256); console_write(out); }
+                else if (streq(buf, "zfetch")) {
+                    console_write("Zetomir OS 0.2-dev\n");
+                    console_write("Kernel: x86_64 freestanding\n");
+                    console_write("Boot: Limine BIOS\n");
+                    console_write("Shell: zetoshell\n");
+                }
                 else if (bi) console_write("unknown command\n");
                 bi = 0;
                 console_write("root@zetomir:/$ ");
