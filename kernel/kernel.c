@@ -20,6 +20,8 @@
 #include "fs/zetofs/zetofs.h"
 #include "net/net.h"
 #include "audio/audio.h"
+#include "pkg/pkg.h"
+#include "installer/install.h"
 #include "process/sched.h"
 #include "loader/elf.h"
 
@@ -107,6 +109,8 @@ void _start(void) {
     zetofs_init();
     net_init();
     audio_init();
+    pkg_init();
+    install_init();
     sched_init();
     wm_init();
     desktop_init();
